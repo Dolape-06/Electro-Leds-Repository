@@ -72,24 +72,9 @@ To contribute, fork this repository, make your changes, and submit a pull reques
 
 ---
 
-## 📷 Gallery
-
-Check out some stunning creations made using **Electro Leaf** in the [Gallery](#) section. Feel free to share your own projects and inspire others!
-
----
-
 ## 🛡️ License
 
 This project is licensed under the MIT License. See the `LICENSE` file for more details.
-
----
-
-## 🔗 Resources
-
-- [Arduino Official Documentation](https://www.arduino.cc/)
-- [Adafruit NeoPixel Library](https://learn.adafruit.com/adafruit-neopixel-uberguide)
-- [FastLED Library](http://fastled.io/)
-- [Bluetooth HC-05 Guide](https://www.instructables.com/How-to-Interface-HC-05-Bluetooth-Module-With-Ardui/)
 
 ---
 
