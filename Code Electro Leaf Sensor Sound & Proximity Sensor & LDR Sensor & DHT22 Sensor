@@ -1,1 +1,385 @@
+#include <FastLED.h>
+#include <SoftwareSerial.h>
+#include <NewPing.h>
+#include <DHT.h>
 
+#define PIXEL_PIN 9
+#define PIXEL_COUNT 150
+#define LED_TYPE WS2811
+#define COLOR_ORDER BRG
+CRGB leds[PIXEL_COUNT];
+
+SoftwareSerial miBT(10, 11);
+
+#define PIN_MIC A0
+#define LDR_PIN 3
+#define DHT_PIN 2
+#define DHTTYPE DHT22
+#define MUESTRAS 10
+#define UMBRAL 500
+
+
+// Configuración del sensor HC-SR04
+#define TRIG_PIN 7
+#define ECHO_PIN 8
+#define MAX_DISTANCE 200  // Distancia máxima en cm
+NewPing sonar(TRIG_PIN, ECHO_PIN, MAX_DISTANCE);
+
+int muestras[MUESTRAS];
+int indiceMuestra = 0;
+
+int estado = 0;
+int nuevoEstado = 0;
+String mainString = "";
+unsigned long lastUpdate = 0;
+const long interval = 10; // Intervalo de verificación reducido a 10 ms
+
+// Variables para gradualColorChange
+int targetR = 0, targetG = 0, targetB = 0;
+int currentR = 0, currentG = 0, currentB = 0;
+int colorChangeIndex = 0;
+bool isGradualChangeActive = false;
+
+// Colores del arcoíris para el modo de distancia (30 colores)
+CRGB rainbowColors[30] = {
+  CRGB(0, 0, 0), CRGB(75, 0, 130), CRGB(0, 0, 255), CRGB(0, 255, 0),
+  CRGB(255, 255, 0), CRGB(255, 127, 0), CRGB(255, 0, 0), CRGB(255, 0, 255),
+  CRGB(238, 130, 238), CRGB(0, 255, 255), CRGB(0, 255, 127), CRGB(127, 255, 0),
+  CRGB(255, 255, 255), CRGB(255, 105, 180), CRGB(0, 255, 255), CRGB(0, 139, 139),
+  CRGB(0, 0, 139), CRGB(0, 0, 205), CRGB(34, 139, 34), CRGB(50, 205, 50),
+  CRGB(60, 179, 113), CRGB(255, 69, 0), CRGB(255, 99, 71), CRGB(255, 20, 147),
+  CRGB(255, 105, 180), CRGB(255, 255, 240), CRGB(250, 128, 114), CRGB(240, 128, 128)
+};
+
+void setup() {
+  FastLED.addLeds<LED_TYPE, PIXEL_PIN, COLOR_ORDER>(leds, PIXEL_COUNT);
+  FastLED.clear();
+  FastLED.show();
+
+  Serial.begin(9600);
+  miBT.begin(38400);
+  Serial.println("Sistema listo. Enviar comandos del 0 al 9, RGB (R,G,B).");
+
+  for (int i = 0; i < MUESTRAS; i++) {
+    muestras[i] = 0;
+  }
+}
+
+void loop() {
+  unsigned long currentMillis = millis();
+
+  if (currentMillis - lastUpdate >= interval) {
+    lastUpdate = currentMillis;
+
+    if (miBT.available()) {
+      mainString = miBT.readStringUntil('\n');
+      mainString.trim();
+      parseAndSetState(mainString);
+    }
+
+    if (estado != nuevoEstado) {
+      estado = nuevoEstado;
+      iniciarEfecto(estado);
+    }
+
+    ejecutarEfectoActual();
+  }
+}
+
+void parseAndSetState(String data) {
+  if (data.indexOf(',') != -1) {
+    parseAndSetColor(data);
+  } else if (data.length() == 1 && ((data[0] >= '0' && data[0] <= '9') || data[0] == 'A' || data[0] == 'a')) {
+    nuevoEstado = (data[0] >= '0' && data[0] <= '9') ? (data[0] - '0') : 10;
+    Serial.println("Nuevo efecto seleccionado: " + String(nuevoEstado));
+    miBT.println("Nuevo efecto seleccionado: " + String(nuevoEstado));
+  } else {
+    Serial.println("Error: Comando no válido.");
+    miBT.println("Error: Comando no válido.");
+  }
+}
+
+void parseAndSetColor(String data) {
+  int r = data.substring(0, data.indexOf(',')).toInt();
+  int g = data.substring(data.indexOf(',') + 1, data.lastIndexOf(',')).toInt();
+  int b = data.substring(data.lastIndexOf(',') + 1).toInt();
+  
+  if (r >= 0 && r <= 255 && g >= 0 && g <= 255 && b >= 0 && b <= 255) {
+    nuevoEstado = 11; // Estado especial para color RGB
+    iniciarGradualColorChange(r, g, b);
+    Serial.println("Iniciando cambio gradual a color RGB: " + String(r) + "," + String(g) + "," + String(b));
+    miBT.println("Iniciando cambio gradual a color RGB: " + String(r) + "," + String(g) + "," + String(b));
+  } else {
+    Serial.println("Error: Valores RGB deben estar entre 0 y 255.");
+    miBT.println("Error: Valores RGB deben estar entre 0 y 255.");
+  }
+}
+
+void iniciarGradualColorChange(int r, int g, int b) {
+  targetR = r;
+  targetG = g;
+  targetB = b;
+  colorChangeIndex = 0;
+  isGradualChangeActive = true;
+}
+
+void setRGBColor(int r, int g, int b) {
+  fill_solid(leds, PIXEL_COUNT, CRGB(r, g, b));
+  FastLED.show();
+}
+
+void iniciarEfecto(int efecto) {
+  FastLED.clear();
+  isGradualChangeActive = false;
+  switch (efecto) {
+    case 0:
+      Serial.println("Modo de sonido activado.");
+      miBT.println("Modo de sonido activado.");
+      break;
+    case 1:
+      Serial.println("Efecto: Rojo sólido");
+      miBT.println("Efecto: Rojo sólido");
+      break;
+    case 2:
+      Serial.println("Efecto: Verde sólido");
+      miBT.println("Efecto: Verde sólido");
+      break;
+    case 3:
+      Serial.println("Efecto: Azul sólido");
+      miBT.println("Efecto: Azul sólido");
+      break;
+    case 4:
+      Serial.println("Modo Argentina Activado");
+      miBT.println("Modo Argentina Activado");
+      break;
+    case 5:
+      Serial.println("Modo de LDR Activado");
+      miBT.println("Modo de LDR Activado");
+      break;
+    case 6:
+      Serial.println("Efecto: Ciclo arcoíris");
+      miBT.println("Efecto: Ciclo arcoíris");
+      break;
+    case 7:
+      Serial.println("Efecto: Latido del corazón");
+      miBT.println("Efecto: Latido del corazón");
+      break;
+    case 8:
+      Serial.println("Efecto: Lluvia dinámica");
+      miBT.println("Efecto: Lluvia dinámica");
+      break;
+    case 9:
+      Serial.println("Efecto: Desvanecimiento frío");
+      miBT.println("Efecto: Desvanecimiento frío");
+      break;
+    case 10:
+      Serial.println("Modo de distancia Activado");
+      miBT.println("Modo de distancia Activado");
+      break;
+    default:
+      Serial.println("Efecto no reconocido.");
+      miBT.println("Efecto no reconocido.");
+      break;
+  }
+}
+
+void ejecutarEfectoActual() {
+  if (isGradualChangeActive) {
+    gradualColorChange();
+  } else {
+    switch (estado) {
+      case 0: modoSonido(); break;
+      case 1: iniciarGradualColorChange(255, 0, 0); break; // Rojo
+      case 2: iniciarGradualColorChange(0, 255, 0); break; // Verde
+      case 3: iniciarGradualColorChange(0, 0, 255); break; // Azul
+      case 4: modoBanderaArgentina(); break; 
+      case 5: modoLDR(); break; // LDR 
+      case 6: startRainbowCycle(); break;
+      case 7: startHeartbeatEffect(); break;
+      case 8: dynamicRainEffect(); break;
+      case 9: startCoolFadeEffect(); break;
+      case 10: modoDistancia(); break;
+      default: break;
+    }
+  }
+}
+
+void gradualColorChange() {
+  if (colorChangeIndex < PIXEL_COUNT) {
+    leds[colorChangeIndex] = CRGB(targetR, targetG, targetB);
+    FastLED.show();
+    colorChangeIndex++;
+  } else {
+    isGradualChangeActive = false;
+    currentR = targetR;
+    currentG = targetG;
+    currentB = targetB;
+  }
+}
+
+void modoSonido() {
+  int nivelSonido = leerSonidoFiltrado();
+  if (nivelSonido > UMBRAL) {
+    setRGBColor(255, 255, 255);
+  } else {
+    setRGBColor(255, 0, 0);
+  }
+}
+
+int leerSonidoFiltrado() {
+  int lecturaActual = abs(analogRead(PIN_MIC) - 512);
+  muestras[indiceMuestra] = lecturaActual;
+  indiceMuestra = (indiceMuestra + 1) % MUESTRAS;
+  
+  long suma = 0;
+  for (int i = 0; i < MUESTRAS; i++) {
+    suma += muestras[i];
+  }
+  return suma / MUESTRAS;
+}
+
+void modoDistancia() {
+  // Medir distancia
+  int distancia = sonar.ping_cm();
+
+  // Mostrar distancia en el monitor serial
+  if (distancia > 0) {
+    Serial.print("Distancia medida: ");
+    Serial.print(distancia);
+    Serial.println(" cm");
+  } else {
+    Serial.println("Sin detección.");
+  }
+
+  // Mapea la distancia a un índice de los colores del arcoíris (0 a 29)
+  int colorIndex = map(distancia, 0, MAX_DISTANCE, 0, 29);
+  colorIndex = constrain(colorIndex, 0, 29);  // Asegura que el índice esté en el rango de 0 a 29
+
+  // Establecer el color de todos los LEDs al color correspondiente
+  setRainbowColor(rainbowColors[colorIndex]);
+
+    delay(1000);  // Ajusta el tiempo según sea necesario
+}
+
+// Función para establecer color en todos los LEDs
+void setRainbowColor(CRGB color) {
+  fill_solid(leds, PIXEL_COUNT, color);
+  FastLED.show();
+}
+
+void startRainbowCycle() {
+  static int hue = 0;
+  for (int i = 0; i < PIXEL_COUNT; i++) {
+    leds[i] = CHSV((hue + i * 10) % 255, 255, 255);  // Aplica color HSV a cada LED
+  }
+  FastLED.show();
+  hue = (hue + 1) % 255;  // Incrementa el tono
+}
+
+void startHeartbeatEffect() {
+  static unsigned long lastUpdate = 0;
+  static float brightness = 0.0;
+  static bool increasing = true;
+  static uint8_t colorIndex = 0;
+
+  // Arreglo de colores para el latido
+  CRGB colors[] = {CRGB::Red, CRGB::Green, CRGB::Blue, CRGB(255, 165, 0), CRGB(128, 0, 128)};
+  uint8_t numColors = sizeof(colors) / sizeof(colors[0]);
+
+  // Controla la velocidad del latido
+  if (millis() - lastUpdate >= 30) {  // Ajusta la velocidad del latido
+    lastUpdate = millis();
+
+    // Ajusta el brillo de los LEDs
+    if (increasing) {
+      brightness += 0.05;  // Incrementa el brillo
+      if (brightness >= 1.0) {
+        increasing = false;  // Empieza a disminuir el brillo
+      }
+    } else {
+      brightness -= 0.05;  // Disminuye el brillo
+      if (brightness <= 0.0) {
+        increasing = true;  // Vuelve a incrementar el brillo
+        colorIndex = (colorIndex + 1) % numColors;  // Cambia al siguiente color
+      }
+    }
+
+    // Aplica el brillo a cada LED
+    for (uint16_t i = 0; i < PIXEL_COUNT; i++) {
+      CRGB color = colors[colorIndex];
+      color.nscale8_video(brightness * 255);  // Aplica el brillo al color
+      leds[i] = color;
+    }
+    FastLED.show();
+  }
+}
+
+void dynamicRainEffect() {
+  static unsigned long lastUpdate = 0;
+  static unsigned long colorUpdate = 0;
+
+  if (millis() - lastUpdate >= 50) {  // Controla la velocidad de la lluvia
+    lastUpdate = millis();
+
+    // Apaga gradualmente los LEDs
+    for (uint16_t i = 0; i < PIXEL_COUNT; i++) {
+      leds[i].fadeToBlackBy(5);  // Reduce el brillo de los LEDs
+    }
+
+    // Añade destellos aleatorios
+    if (millis() - colorUpdate >= 100) {  // Ajusta el tiempo entre destellos
+      colorUpdate = millis();
+      for (int j = 0; j < 3; j++) {  // Número de LEDs que destellan
+        int randomPixel = random(0, PIXEL_COUNT);
+        leds[randomPixel] = CRGB(random(50, 255), random(50, 255), random(50, 255));  // Color aleatorio
+      }
+    }
+
+    FastLED.show();
+  }
+}
+
+void startCoolFadeEffect() {
+  static unsigned long lastUpdate = 0;
+  static uint8_t hue = 0;
+
+  if (millis() - lastUpdate >= 100) {  // Controla la velocidad del desvanecimiento
+    lastUpdate = millis();
+
+    // Colores fríos y relajantes
+    fill_solid(leds, PIXEL_COUNT, CHSV(hue, 255, 255));
+    FastLED.show();
+
+    // Actualiza el tono del color
+    hue++;
+  }
+}
+
+void modoLDR() {
+  int ldrValue = digitalRead(LDR_PIN);
+  
+  if (ldrValue == HIGH) {
+    // Se detecta luz, encender los LEDs
+    fill_solid(leds, PIXEL_COUNT, CRGB(255, 0, 0));
+    Serial.println("Sin luz: LEDs encendidos");
+    miBT.println("Sin luz: LEDs encendidos");
+  } else {
+    // No se detecta luz, apagar los LEDs
+    fill_solid(leds, PIXEL_COUNT, CRGB(0, 0, 0));
+    Serial.println("Luz detectada: LEDs apagados");
+    miBT.println("Luz detectada: LEDs apagados");
+  }
+  
+  FastLED.show();
+
+delay(1000);  //  
+}
+
+void modoBanderaArgentina() {
+  
+  iniciarGradualColorChange(0, 150, 255);  //  
+  delay(500);  //  
+  
+  setRGBColor(255, 255, 255);  //  
+  delay(500);  // 
+}
