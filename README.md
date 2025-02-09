@@ -88,7 +88,3 @@ Mantente conectado con otros creadores y entusiastas:
 
 - **Desarrollado por:** [GUTIERREZ, Leonel Valentin]
 - **Agradecimientos especiales:** [Colaboradores: ACEBAL, Agustin Daniel & LASCIARREA, Lucas]
-
----
-
-## 📂 Estructura del repositorio
