@@ -1,91 +1,94 @@
 # 🌿 Electro Leds
 
-**Electro Leds** is a groundbreaking project that merges technology and creativity, allowing you to control vibrant LED patterns wirelessly through Bluetooth. Perfect for tech enthusiasts, makers, and anyone with a passion for DIY electronics, Electro Leds offers an engaging and educational experience. Dive into the world of LEDs and Bluetooth communication with this feature-packed project.
+**Electro Leds** es un proyecto innovador que combina tecnología y creatividad, permitiéndote controlar patrones de LEDs vibrantes de forma inalámbrica a través de Bluetooth. Perfecto para entusiastas de la tecnología, creadores y cualquier persona apasionada por la electrónica DIY, Electro Leds ofrece una experiencia educativa y entretenida. Sumérgete en el mundo de los LEDs y la comunicación Bluetooth con este proyecto lleno de funciones.
 
 ---
 
-## 🌟 Key Features
+## 🌟 Características principales
 
-- **Customizable LED Effects:** Design and control stunning light patterns tailored to your preferences.
-- **Wireless Functionality:** Real-time control using Bluetooth-enabled devices such as smartphones or laptops.
-- **Optimized Performance:** Uses non-blocking code techniques (leveraging `millis()`) to ensure smooth and efficient operation.
-- **Beginner-Friendly:** Modular and clear codebase, making it easy for beginners to understand and modify.
-- **Expandable Design:** A flexible framework that welcomes enhancements and additional features.
-
----
-
-## 🛠️ What You'll Need
-
-To bring **Electro Leds** to life, you will need the following components:
-
-- **Arduino Board:** Compatible with models such as Arduino Uno, Nano, or Mega.
-- **LED Strips:** Suitable for **WS2811**, **Neopixel**, or similar **RGB LED strips**.
-- **Bluetooth Module:** HC-05 or HC-06 for wireless communication.
-- **Power Supply:** Ensure proper voltage and current for your LED strips.
-- Basic electronic components like resistors, connectors, and wires.
-- **Optional:** A 3D-printed or custom-designed enclosure for a professional finish.
+- **Efectos de LEDs personalizables:** Diseña y controla impresionantes patrones de luz adaptados a tus preferencias.
+- **Funcionalidad inalámbrica:** Control en tiempo real usando dispositivos habilitados con Bluetooth, como smartphones o laptops.
+- **Rendimiento optimizado:** Utiliza técnicas de código no bloqueante (aprovechando `millis()`) para garantizar un funcionamiento fluido y eficiente.
+- **Amigable para principiantes:** Base de código modular y clara, facilitando su comprensión y modificación para principiantes.
+- **Diseño expandible:** Un marco flexible que permite mejoras y la adición de nuevas funciones.
 
 ---
 
-## 🚀 Why Choose Electro Leds?
+## 🛠️ Qué necesitarás
 
-Electro Leds is not just a project; it's a gateway to innovation and learning. By working on this project, you can:
+Para dar vida a **Electro Leds**, necesitarás los siguientes componentes:
 
-- **Learn New Skills:** Master the fundamentals of Bluetooth communication and LED programming.
-- **Enhance Creativity:** Explore endless possibilities by designing unique light patterns and effects.
-- **Contribute to Open Source:** Join a community of developers and makers by improving and expanding the project.
-- **Build Something Cool:** Impress your friends and family with your creation, whether it's for decoration, art installations, or just for fun!
-
----
-
-## 📖 How It Works
-
-1. **Hardware Setup:** Connect the Bluetooth module, LED strip, and other components to the Arduino board.
-2. **Upload the Code:** Use the Arduino IDE to upload the provided sketch to your Arduino.
-3. **Pair Devices:** Pair your Bluetooth-enabled device with the Bluetooth module.
-4. **Control LEDs:** Use a Bluetooth app or a custom interface to send commands and control LED patterns in real time.
+- **Placa Arduino:** Compatible con modelos como Arduino Uno, Nano o Mega.
+- **Tiras de LEDs:** Adecuadas para tiras RGB como WS2811, Neopixel o similares.
+- **Módulo Bluetooth:** HC-05 o HC-06 para la comunicación inalámbrica.
+- **Fuente de alimentación:** Asegúrate de proporcionar el voltaje y la corriente adecuados para tus tiras de LEDs.
+- Componentes electrónicos básicos como resistencias, conectores y cables.
+- **Opcional:** Una carcasa impresa en 3D o diseñada a medida para un acabado profesional.
 
 ---
 
-## 🔧 Getting Started
+## 🚀 ¿Por qué elegir Electro Leds?
 
-Follow these steps to get started:
+Electro Leds no es solo un proyecto; es una puerta de entrada a la innovación y el aprendizaje. Al trabajar en este proyecto, podrás:
 
-1. Clone this repository to your local machine.
-2. Open the project folder and load the Arduino sketch into the Arduino IDE.
-3. Install the necessary libraries (e.g., Adafruit NeoPixel, FastLED) using the Arduino Library Manager.
-4. Connect your components as per the wiring diagram included in the `docs` folder.
-5. Upload the code and pair your device with the Bluetooth module.
-6. Use the recommended Bluetooth app or script to control your LEDs.
+- **Aprender nuevas habilidades:** Domina los fundamentos de la comunicación Bluetooth y la programación de LEDs.
+- **Potenciar tu creatividad:** Explora infinitas posibilidades diseñando patrones de luz únicos y efectos personalizados.
+- **Contribuir al código abierto:** Únete a una comunidad de desarrolladores y creadores para mejorar y expandir el proyecto.
+- **Construir algo increíble:** Sorprende a tus amigos y familiares con tu creación, ya sea para decoración, instalaciones artísticas o simplemente por diversión.
 
 ---
 
-## 🤝 Contribution
+## 📖 Cómo funciona
 
-We warmly welcome contributions to make **Electro Leds** even better. Here are some ways you can help:
-
-- Add new LED effects or animations.
-- Improve the Bluetooth command interface.
-- Enhance documentation with setup tips and troubleshooting guides.
-- Share your creative uses of Electro Leds with the community.
-
-To contribute, fork this repository, make your changes, and submit a pull request. Let’s build something extraordinary together!
-
-
-## 🌐 Join the Community
-
-Stay connected with other creators and enthusiasts:
-
-- **Share Your Work:** Post your creations and inspire others in the maker community.
-- **Collaborate:** Connect with fellow developers to enhance and expand the project.
-
-Let’s bring creativity to light with **Electro Leds**!
+1. **Configuración del hardware:** Conecta el módulo Bluetooth, la tira de LEDs y otros componentes a la placa Arduino.
+2. **Subir el código:** Usa el IDE de Arduino para cargar el sketch proporcionado en tu placa.
+3. **Emparejar dispositivos:** Empareja tu dispositivo habilitado con Bluetooth (como un smartphone) con el módulo Bluetooth.
+4. **Controlar los LEDs:** Usa una aplicación Bluetooth o una interfaz personalizada para enviar comandos y controlar los patrones de LEDs en tiempo real.
 
 ---
 
-## 📜 Credits
+## 🔧 Cómo empezar
 
-- **Developed by:** [**GUTIERREZ**, Leonel Valentin]
-- **Special Thanks:** [**Collaborators:** **ACEBAL**, Agustin Daniel & **LASCIARREA**, Lucas]
+Sigue estos pasos para comenzar:
+
+1. Clona este repositorio en tu máquina local.
+2. Abre la carpeta del proyecto y carga el sketch de Arduino en el IDE de Arduino.
+3. Instala las librerías necesarias (por ejemplo, Adafruit NeoPixel, FastLED) usando el Administrador de Librerías de Arduino.
+4. Conecta tus componentes según el diagrama de conexiones incluido en la carpeta `docs`.
+5. Sube el código y empareja tu dispositivo con el módulo Bluetooth.
+6. Usa la aplicación Bluetooth recomendada o un script para controlar tus LEDs.
 
 ---
+
+## 🤝 Contribución
+
+Agradecemos calurosamente las contribuciones para hacer que **Electro Leds** sea aún mejor. Aquí hay algunas formas en que puedes ayudar:
+
+- Añadir nuevos efectos o animaciones de LEDs.
+- Mejorar la interfaz de comandos Bluetooth.
+- Mejorar la documentación con consejos de configuración y guías de solución de problemas.
+- Compartir tus usos creativos de Electro Leds con la comunidad.
+
+Para contribuir, haz un fork de este repositorio, realiza tus cambios y envía una solicitud de pull. ¡Construyamos algo extraordinario juntos!
+
+---
+
+## 🌐 Únete a la comunidad
+
+Mantente conectado con otros creadores y entusiastas:
+
+- **Comparte tu trabajo:** Publica tus creaciones e inspira a otros en la comunidad de makers.
+- **Colabora:** Conéctate con otros desarrolladores para mejorar y expandir el proyecto.
+
+¡Llevemos la creatividad a la luz con **Electro Leds**!
+
+---
+
+## 📜 Créditos
+
+- **Desarrollado por:** [GUTIERREZ, Leonel Valentin]
+- **Agradecimientos especiales:** [Colaboradores: ACEBAL, Agustin Daniel & LASCIARREA, Lucas]
+
+---
+
+## 📂 Estructura del repositorio
