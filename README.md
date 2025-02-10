@@ -91,6 +91,6 @@ Mantente conectado con otros creadores y entusiastas:
 
 ---
 
-## Registro de Tiempo - Trabajo
+## 📋 Registro de Tiempo - Trabajo
 
 - [Ver Tabla de Tiempo y Trabajo](https://shorturl.at/UE2hn)
