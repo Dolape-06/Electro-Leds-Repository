@@ -99,6 +99,6 @@ Mantente conectado con otros creadores y entusiastas:
 
 ##  📖Electro LEDS DOCS
 
-- [Electro LEDS DOCS DOWNLOAD PDF]([https://shorturl.at/UE2hn](https://drive.google.com/file/d/13CKciFhU7N8sho2560ne_dZWiVELpJEY/view?usp=sharing)
+- [Electro LEDS DOCS DOWNLOAD PDF][https://drive.google.com/file/d/13CKciFhU7N8sho2560ne_dZWiVELpJEY/view?usp=sharing] 
 
 ---
