@@ -88,3 +88,9 @@ Mantente conectado con otros creadores y entusiastas:
 
 - **Desarrollado por:** [GUTIERREZ, Leonel Valentin]
 - **Agradecimientos especiales:** [Colaboradores: ACEBAL, Agustin Daniel & LASCIARREA, Lucas]
+
+---
+
+## Registro de Tiempo - Trabajo
+
+- ##[Ver Tabla de Tiempo y Trabajo](https://shorturl.at/UE2hn)
