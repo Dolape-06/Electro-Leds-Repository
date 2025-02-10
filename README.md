@@ -54,7 +54,7 @@ Sigue estos pasos para comenzar:
 1. Clona este repositorio en tu máquina local.
 2. Abre la carpeta del proyecto y carga el sketch de Arduino en el IDE de Arduino.
 3. Instala las librerías necesarias (por ejemplo, Adafruit NeoPixel, FastLED) usando el Administrador de Librerías de Arduino.
-4. Conecta tus componentes según el diagrama de conexiones incluido en la carpeta `https://shorturl.at/Elnis`.
+4. Conecta tus componentes según el diagrama de conexiones incluido en la carpeta https://shorturl.at/Elnis.
 5. Sube el código y empareja tu dispositivo con el módulo Bluetooth.
 6. Usa la aplicación Bluetooth recomendada o un script para controlar tus LEDs.
 
