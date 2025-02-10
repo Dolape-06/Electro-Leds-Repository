@@ -94,3 +94,9 @@ Mantente conectado con otros creadores y entusiastas:
 ## 📋 Registro de Tiempo - Trabajo
 
 - [Ver Tabla de Tiempo y Trabajo](https://shorturl.at/UE2hn)
+
+---
+
+##  📖Electro LEDS DOCS
+
+- [Electro LEDS DOCS DOWNLOAD PDF]([https://shorturl.at/UE2hn](https://drive.google.com/file/d/13CKciFhU7N8sho2560ne_dZWiVELpJEY/view?usp=sharing))
